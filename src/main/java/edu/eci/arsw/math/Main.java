@@ -16,9 +16,7 @@ import edu.eci.arsw.threads.PiThread;
 public class Main {
 
     public static void main(String a[]) {
-        PiThread piThread = new PiThread(0, 10);
-        piThread.run();
-        System.out.println(bytesToHex(piThread.getDigits()));
+        System.out.println(bytesToHex(PiDigits.getDigits(0, 1000000,10 )));
         //System.out.println(bytesToHex(PiThread.getDigits(1, 100)));
         //System.out.println(bytesToHex(PiThread.getDigits(1, 1000000)));
     }

@@ -9,54 +9,45 @@ public class PiThread extends Thread {
     private int start;
     private int count;
 
-    public PiThread(int start, int count){
+    public PiThread(int start, int end) {
         this.start = start;
-        this.count = count;
+        this.count = end - start;
+        this.digits = new byte[this.count];
     }
 
-    public void run(){
+    public void run() {
         piDigits();
     }
 
-    public byte[] piDigits(){
-        if (start < 0) {
+    public byte[] piDigits() {
+        if (start < 0 || count < 0) {
             throw new RuntimeException("Invalid Interval");
         }
 
-        if (count < 0) {
-            throw new RuntimeException("Invalid Interval");
-        }
-
-        digits = new byte[count];
         double sum = 0;
+        int currentPosition = start;
 
         for (int i = 0; i < count; i++) {
             if (i % DigitsPerSum == 0) {
-                sum = 4 * sum(1, start)
-                        - 2 * sum(4, start)
-                        - sum(5, start)
-                        - sum(6, start);
+                sum = 4 * sum(1, currentPosition)
+                        - 2 * sum(4, currentPosition)
+                        - sum(5, currentPosition)
+                        - sum(6, currentPosition);
 
-                start += DigitsPerSum;
+                currentPosition += DigitsPerSum;
             }
 
             sum = 16 * (sum - Math.floor(sum));
-            digits[i] = (byte) sum;
+            digits[i] = (byte) Math.floor(sum);
         }
 
         return digits;
     }
 
-    public byte[] getDigits(){
+    public byte[] getDigits() {
         return digits;
     }
 
-    /// <summary>
-    /// Returns the sum of 16^(n - k)/(8 * k + m) from 0 to k.
-    /// </summary>
-    /// <param name="m"></param>
-    /// <param name="n"></param>
-    /// <returns></returns>
     private static double sum(int m, int n) {
         double sum = 0;
         int d = m;
@@ -82,12 +73,6 @@ public class PiThread extends Thread {
         return sum;
     }
 
-    /// <summary>
-    /// Return 16^p mod m.
-    /// </summary>
-    /// <param name="p"></param>
-    /// <param name="m"></param>
-    /// <returns></returns>
     private static int hexExponentModulo(int p, int m) {
         int power = 1;
         while (power * 2 <= p) {
@@ -113,9 +98,4 @@ public class PiThread extends Thread {
 
         return result;
     }
-
-
-
-  
-    
 }
