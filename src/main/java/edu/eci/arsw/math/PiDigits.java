@@ -21,6 +21,9 @@ public class PiDigits {
         int remainingDigits = count % threadNumber;
         int currentStart = start;
 
+        System.out.println("Iniciando cálculo con " + threadNumber + " hilos...");
+
+        long startTime = System.nanoTime(); // Medir tiempo de inicio
 
         for (int i = 0; i < threadNumber; i++) {
             int digitsForThisThread = digitsPerThread;
@@ -45,6 +48,10 @@ public class PiDigits {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Calculation interrupted", e);
         }
+
+        long endTime = System.nanoTime(); // Medir tiempo de finalización
+        double elapsedTime = (endTime - startTime) / 1e9;
+        System.out.println("Tiempo total de ejecución en PiDigits: " + elapsedTime + " segundos");
 
         int offset = 0;
         for (PiThread thread : threads) {
