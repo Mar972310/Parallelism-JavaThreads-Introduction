@@ -5,8 +5,8 @@
  */
 package edu.eci.arsw.math;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
 import edu.eci.arsw.threads.PiThread;
 
 /**
@@ -16,9 +16,19 @@ import edu.eci.arsw.threads.PiThread;
 public class Main {
 
     public static void main(String a[]) {
-        System.out.println(bytesToHex(PiDigits.getDigits(0, 1000000,10 )));
-        //System.out.println(bytesToHex(PiThread.getDigits(1, 100)));
-        //System.out.println(bytesToHex(PiThread.getDigits(1, 1000000)));
+        int numThreads = 1; // Varia para cada experimento (1,8,16,200,500)
+        int numDigits = 1000000;
+
+        System.out.println("Ejecutando con " + numThreads + " hilos...");
+
+        long startTime = System.nanoTime(); // Iniciar medición de tiempo
+        byte[] piDigits = PiDigits.getDigits(0, numDigits, numThreads);
+        long endTime = System.nanoTime(); // Finalizar medición de tiempo
+
+        double elapsedTime = (endTime - startTime) / 1e9; // Convertir a segundos
+        System.out.println("Tiempo de ejecución: " + elapsedTime + " segundos");
+
+        System.out.println(bytesToHex(piDigits));
     }
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -37,5 +47,4 @@ public class Main {
         }
         return sb.toString();
     }
-
 }
